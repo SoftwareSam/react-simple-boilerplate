@@ -8,9 +8,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.updateMessageState = this.updateMessageState.bind(this)
+    this.updateUserState = this.updateUserState.bind(this)
     this.state = {
 
-    currentUser: {name: "Bob"},
+    currentUser: {name: ""},
     messages: [
     {
       username: "Bob",
@@ -27,6 +28,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // this is the socket connection object
+    this.socket = new WebSocket("ws://localhost:3001/");
+
     console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
@@ -40,12 +44,17 @@ class App extends Component {
   }
 
   updateMessageState(messageValue){
-    this.setState({messages: [...this.state.messages, {username: "Bob", content: messageValue, id: 2424}]})
+    this.setState({messages: [...this.state.messages, {username: this.state.currentUser.name, content: messageValue}] })
+  }
+
+  updateUserState(userValue){
+    this.setState({currentUser: {name: userValue}})
+    console.log(this.state)
   }
 
 
+
   render() {
-    console.log(this.state.messages);
     return (
       <div>
         <nav className="navbar">
@@ -53,8 +62,8 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages}/>
         <SysMsg />
-        <ChatBar currentUser={this.state.currentUser}
-                 handleChangeFunc={this.updateMessageState}
+        <ChatBar handleUserFunc={this.updateUserState}
+                 handleMessageFunc={this.updateMessageState}
         />
       </div>
     );
