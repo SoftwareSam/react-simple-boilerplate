@@ -40,9 +40,9 @@ class App extends Component {
   }
 
   updateMessageState(messageValue){
-    this.setState({messages: [...this.state.messages, {username: "Bob", content: messageValue, id: }]})
+    this.setState({messages: [...this.state.messages, {username: "Bob", content: messageValue, id: 2424}]})
   }
- }
+
 
   render() {
     console.log(this.state.messages);
